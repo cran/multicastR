@@ -1,0 +1,13 @@
+d10b3514776cd6b72aaf6520b32cd053 *DESCRIPTION
+de2f5eb735a7cf8ad2f9e4fc746b4cf7 *NAMESPACE
+d41d8cd98f00b204e9800998ecf8427e *R/mctable.R
+8c494e4714c3143cc67794112f2b55ca *R/multicast.R
+b5e4892e9b7eccc73c29c6ee24c89d5d *R/multicastR.R
+6d0110d9459878750810ceb5fb47edc4 *inst/CITATION
+573a340e6a7eb4805ef7e07eda368252 *man/mcindex.Rd
+69706c61c737a918558419f06d122f98 *man/mcmissarg.Rd
+4f740bea4ae48b194bf5a5773587f783 *man/multicast.Rd
+152c4dfc07cb64ee13dd25c954f60d71 *man/multicastR.Rd
+760b94f40e3e22cfc2be1087980d1109 *tests/testthat.R
+11a03672dc71eef16316361abaa8ccaf *tests/testthat/test_invalidvkey.R
+3fd423ff593d529c1a0bd1cebfb5172e *tests/testthat/test_vkeynotinindex.R
