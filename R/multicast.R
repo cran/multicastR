@@ -1,15 +1,13 @@
 # ----------------------------------------------------------------------
 
-#' Accessing Multi-CAST annotation data
+#' Access Multi-CAST annotation data
 #'
 #' \code{multicast} downloads the Multi-CAST annotation data from the servers of
 #' the Language Archive Cologne (LAC) and outputs it as a
-#' \code{\link[data.table]{data.table}}.
-#'
-#' The Multi-CAST collection is amenable to extension by additional data sets
-#' and annotation schemes. In the spirit of scientific accountability and
-#' reproducability, \code{multicast} may take an optional argument that allows
-#' access to previous versions of the annotation data.
+#' \code{\link[data.table]{data.table}}. The Multi-CAST collection is amenable
+#' to extension by additional data sets and annotation schemes. In the spirit of
+#' scientific accountability and reproducability, \code{multicast} takes an
+#' optional argument to select earlier versions of the annotation data.
 #'
 #' @section Licensing: The Multi-CAST annotation data accessed by the
 #'   \code{multicast} method is published under a \emph{Create Commons
@@ -19,11 +17,11 @@
 #'   to its contributors.
 #'
 #' @section Citing Multi-CAST: Data from the Multi-CAST collection should be
-#'   cited as: \itemize{ \item Haig, Geoffrey & Schnell, Stefan (eds.). 2018[2015].
-#'   \emph{Multi-CAST: Multilinguial Corpus of Annotated Spoken Texts}.
-#'   (\url{https://lac.uni-koeln.de/en/multicast/}) (Accessed \emph{date}.) } If
-#'   for some reason you need to cite this package on its own, please refer to
-#'   \code{citation(multicastR)}.
+#'   cited as: \itemize{ \item Haig, Geoffrey & Schnell, Stefan (eds.).
+#'   2018[2015]. \emph{Multi-CAST: Multilinguial Corpus of Annotated Spoken
+#'   Texts}. (\url{https://lac.uni-koeln.de/en/multicast/}) (Accessed
+#'   \emph{date}.) } If for some reason you need to cite this package on its
+#'   own, please refer to \code{citation(multicastR)}.
 #'
 #' @section References: \itemize{\item Haig, Geoffrey & Schnell, Stefan. 2014.
 #'   \emph{Annotations using GRAID (Grammatical Relations and Animacy in
@@ -38,7 +36,7 @@
 #'   Annotation guidelines.} Version 1.0. Unpublished Manuscript. Bamberg /
 #'   Melbourne: University of Bamberg / University of Melbourne.}
 #'
-#' @seealso \code{\link{mcindex}}.
+#' @seealso \code{\link{mcindex}}
 #'
 #' @param vkey A numeric or character vector of length 1 specifying the
 #'   requested version of the annotation values. Must be one of the four-digit
@@ -71,7 +69,7 @@
 #' @export
 multicast <- function(vkey) {
 	# check whether vkey is missing
-	if (!mcmissarg(vkey)) {
+	if (!mc_missarg(vkey)) {
 		# 1A: vkey is not missing
 		# check whether vkey is a numeric or character vector
 		if (!(is.numeric(vkey) | is.character(vkey))) {
@@ -117,7 +115,7 @@ multicast <- function(vkey) {
 									   "' (",
 									   lat,
 									   "published ",
-									   index[version==vkey,2], ")."))
+									   index[version == vkey,2], ")."))
 					}
 				}
 			}
@@ -137,7 +135,7 @@ multicast <- function(vkey) {
 	}
 
 	# construct URL for annotation file
-	path <- paste0("http://bamling-research.de/multicastR/multicast_",
+	path <- paste0("http://culturalstudiesmideast.de/misc/multicastr/multicast_",
 				   vkey,
 				   ".txt")
 
@@ -146,11 +144,11 @@ multicast <- function(vkey) {
 	tryCatch(
 		suppressWarnings(
 			mc <- data.table::fread(path,
-									sep="\t",
-									header=TRUE,
-									colClasses=list(factor=1:2, character=3:11),
-									encoding="UTF-8",
-									showProgress=FALSE)
+									sep = "\t",
+									header = TRUE,
+									colClasses = list(factor = 1:2, character = 3:11),
+									encoding = "UTF-8",
+									showProgress = FALSE)
 		),
 		error=function(e) { stop("failed to download annotations.") }
 	)
@@ -165,64 +163,42 @@ multicast <- function(vkey) {
 
 # ----------------------------------------------------------------------
 
-#' Accessing the Multi-CAST version index
+#' Access the Multi-CAST version index
 #'
 #' \code{mcindex} downloads an index of versions of the Multi-CAST annotation
 #' data from the servers of the Language Archive Cologne (LAC) and outputs it as
-#' a \code{\link[data.table]{data.table}}. The value in the leftmost \code{version}
-#' column may be passed to the \code{\link{multicast}} method for access to
-#' earlier versions of the annotations.
+#' a \code{\link[data.table]{data.table}}. The value in the leftmost
+#' \code{version} column may be passed to the \code{\link{multicast}} method for
+#' access to earlier versions of the annotations.
 #'
 #' @seealso \code{\link{multicast}}.
 #'
 #' @return A \code{\link[data.table]{data.table}} with five columns: \describe{
-#'   \item{\code{[, 1] version}}{Version key. YYMM format. Used with \code{\link{multicast}}.}
-#'   \item{\code{[, 2] date}}{Publication date. YYYY-MM-DD format.}
-#'   \item{\code{[, 3] size}}{Total file size in kilobytes.} \item{\code{[, 4] files}}{Number of
-#'   corpus files.} \item{\code{[, 5] corpora}}{Names of the corpora
-#'   (languages) included in the version.} }
+#'   \item{\code{[, 1] version}}{Version key. YYMM format. Used with
+#'   \code{\link{multicast}}.} \item{\code{[, 2] date}}{Publication date.
+#'   YYYY-MM-DD format.} \item{\code{[, 3] size}}{Total file size in kilobytes.}
+#'   \item{\code{[, 4] files}}{Number of corpus files.} \item{\code{[, 5]
+#'   corpora}}{Names of the corpora (languages) included in the version.} }
 #' @examples
 #' # retrieve and print version index
 #' mcindex()
 #' @export
 mcindex <- function() {
 	# fetch version index
-	path <- "http://bamling-research.de/multicastR/multicast_index.txt"
+	path <- "http://culturalstudiesmideast.de/misc/multicastr/multicast_index.txt"
 	message("Retrieving version index from the LAC...")
 	tryCatch(
 		suppressWarnings(
 			index <- data.table::fread(path,
-									   sep="\t",
-									   header=TRUE,
-									   showProgress=FALSE)),
+									   sep = "\t",
+									   header = TRUE,
+									   showProgress = FALSE)),
 		error=function(e) { stop("failed to download index.") }
 	)
 	message(paste0("Success! Downloaded <1 KB."))
 
 	# return index
 	return(index)
-}
-
-# ----------------------------------------------------------------------
-
-# ----------------------------------------------------------------------
-
-#' Test for empty arguments
-#'
-#' \code{mcmissarg} tests whether or not a value was specified as an argument to
-#' a function. Unlike \code{\link[base]{missing}}, it also returns \code{FALSE}
-#' with zero-length objects such as \code{c()} or \code{data.frame()}.
-#'
-#' @seealso \code{\link{multicast}}
-#'
-#' @return A logical vector of length 1.
-#' @keywords internal
-mcmissarg <- function(x) {
-	if ("x" %in% names(match.call())) {
-		return(missing(x))
-	} else {
-		return(TRUE)
-	}
 }
 
 # ----------------------------------------------------------------------

@@ -2,24 +2,24 @@
 % Please edit documentation in R/multicast.R
 \name{mcindex}
 \alias{mcindex}
-\title{Accessing the Multi-CAST version index}
+\title{Access the Multi-CAST version index}
 \usage{
 mcindex()
 }
 \value{
 A \code{\link[data.table]{data.table}} with five columns: \describe{
-  \item{\code{[, 1] version}}{Version key. YYMM format. Used with \code{\link{multicast}}.}
-  \item{\code{[, 2] date}}{Publication date. YYYY-MM-DD format.}
-  \item{\code{[, 3] size}}{Total file size in kilobytes.} \item{\code{[, 4] files}}{Number of
-  corpus files.} \item{\code{[, 5] corpora}}{Names of the corpora
-  (languages) included in the version.} }
+  \item{\code{[, 1] version}}{Version key. YYMM format. Used with
+  \code{\link{multicast}}.} \item{\code{[, 2] date}}{Publication date.
+  YYYY-MM-DD format.} \item{\code{[, 3] size}}{Total file size in kilobytes.}
+  \item{\code{[, 4] files}}{Number of corpus files.} \item{\code{[, 5]
+  corpora}}{Names of the corpora (languages) included in the version.} }
 }
 \description{
 \code{mcindex} downloads an index of versions of the Multi-CAST annotation
 data from the servers of the Language Archive Cologne (LAC) and outputs it as
-a \code{\link[data.table]{data.table}}. The value in the leftmost \code{version}
-column may be passed to the \code{\link{multicast}} method for access to
-earlier versions of the annotations.
+a \code{\link[data.table]{data.table}}. The value in the leftmost
+\code{version} column may be passed to the \code{\link{multicast}} method for
+access to earlier versions of the annotations.
 }
 \examples{
 # retrieve and print version index

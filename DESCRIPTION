@@ -1,8 +1,8 @@
 Package: multicastR
 Type: Package
 Title: A Companion to the Multi-CAST Collection
-Version: 1.0.0
-Authors@R: person("Nils Norman", "Schiborr", email = "nils-norman.schiborr@uni-bamberg.de", role=c("aut", "cre"))
+Version: 1.0.1
+Authors@R: person("Nils Norman", "Schiborr", email = "nils-norman.schiborr@uni-bamberg.de", role = c("aut", "cre"))
 URL: https://lac.uni-koeln.de/en/multicast/
 Description: Provides a basic interface for accessing annotation data from
    the Multi-CAST collection, a database of spoken natural language texts
@@ -16,11 +16,12 @@ License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.0.0), data.table (>= 1.10.0)
-RoxygenNote: 6.0.1
+Imports: stringi (>= 1.1.0), xml2 (>= 1.1.0)
+RoxygenNote: 6.1.0
 Suggests: testthat
 NeedsCompilation: no
-Packaged: 2018-06-13 06:18:01 UTC; Nils
+Packaged: 2018-09-29 18:29:02 UTC; Nils
 Author: Nils Norman Schiborr [aut, cre]
 Maintainer: Nils Norman Schiborr <nils-norman.schiborr@uni-bamberg.de>
 Repository: CRAN
-Date/Publication: 2018-06-15 08:37:55 UTC
+Date/Publication: 2018-09-29 18:50:03 UTC
