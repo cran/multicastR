@@ -4,39 +4,47 @@
 \alias{multicast}
 \title{Access Multi-CAST annotation data}
 \usage{
-multicast(vkey)
+multicast(vkey, legacy.colnames = FALSE)
 }
 \arguments{
 \item{vkey}{A numeric or character vector of length 1 specifying the
 requested version of the annotation values. Must be one of the four-digit
-version keys in the first column of \code{\link{mcindex}}, or empty. If
-empty, \code{multicast} defaults to the most recent version of the
-annotations.}
+version keys in the first column of \code{\link{mc_index}}, or empty. If
+empty or no value is supplied, \code{multicast} automatically retrieves the
+most recent version of the annotations. See the examples below for an
+illustration.}
+
+\item{legacy.colnames}{If \code{TRUE}, renames the \code{text} and
+\code{gword} columns to what they were called prior to version 1.1.0 of the
+package (i.e. \code{file}, \code{word}). This option will be removed in the
+future.}
 }
 \value{
 A \code{\link[data.table]{data.table}} with eleven columns:
   \describe{ \item{\code{[, 1] corpus}}{The name of the corpus.}
-  \item{\code{[, 2] file}}{The title of the file. A single long corpus text
-  may be split into multiple files.} \item{\code{[, 3] uid}}{The utterance
-  identifier. Uniquely identifies an utterance within a file.} \item{\code{[,
-  4] word}}{Grammatical words. The tokenized utterances in the object
-  language.} \item{\code{[, 5] gloss}}{Morphological glosses following the
-  Leipzig Glossing Rules.} \item{\code{[, 6] graid}}{Annotations using the
-  GRAID scheme (Haig & Schnell 2014).} \item{\code{[, 7] gform}}{The form
-  symbol of a GRAID gloss.} \item{\code{[, 8] ganim}}{The person-animacy
-  symbol of a GRAID gloss.} \item{\code{[, 9] gfunc}}{The function symbol of
-  a GRAID gloss.} \item{\code{[, 10] refind}}{Referent tracking using the
-  RefIND scheme (Schiborr et al. 2018).} \item{\code{[, 11] reflex}}{The
-  information status of newly introduced referents, using a simplified
-  version of the RefLex scheme (Riester & Baumann 2017).} }
+  \item{\code{[, 2] text}}{The title of the text. If \code{legacy.colnames}
+  is \code{TRUE}, this column is named \code{file} instead.} \item{\code{[,
+  3] uid}}{The utterance identifier. Uniquely identifies an utterance within
+  a text.} \item{\code{[, 4] gword}}{Grammatical words. The tokenized
+  utterances in the object language. If \code{legacy.colnames} is
+  \code{TRUE}, this column is named \code{word} instead.} \item{\code{[, 5]
+  gloss}}{Morphological glosses following the Leipzig Glossing Rules.}
+  \item{\code{[, 6] graid}}{Annotations using the GRAID scheme (Haig &
+  Schnell 2014).} \item{\code{[, 7] gform}}{The form symbol of a GRAID
+  gloss.} \item{\code{[, 8] ganim}}{The person-animacy symbol of a GRAID
+  gloss.} \item{\code{[, 9] gfunc}}{The function symbol of a GRAID gloss.}
+  \item{\code{[, 10] refind}}{Referent tracking using the RefIND scheme
+  (Schiborr et al. 2018).} \item{\code{[, 11] reflex}}{The information status
+  of newly introduced referents, using a simplified version of the RefLex
+  scheme (Riester & Baumann 2017).} }
 }
 \description{
 \code{multicast} downloads the Multi-CAST annotation data from the servers of
-the Language Archive Cologne (LAC) and outputs it as a
-\code{\link[data.table]{data.table}}. The Multi-CAST collection is amenable
-to extension by additional data sets and annotation schemes. In the spirit of
-scientific accountability and reproducability, \code{multicast} takes an
-optional argument to select earlier versions of the annotation data.
+the University of Bamberg and outputs them as a
+\code{\link[data.table]{data.table}}. As the Multi-CAST collection is
+amenable to extension by additional data sets and annotation schemes,
+\code{multicast} takes an optional argument to select earlier versions of the
+annotation data to ensure scientific accountability and reproducability.
 }
 \section{Licensing}{
  The Multi-CAST annotation data accessed by the
@@ -50,8 +58,8 @@ optional argument to select earlier versions of the annotation data.
 \section{Citing Multi-CAST}{
  Data from the Multi-CAST collection should be
   cited as: \itemize{ \item Haig, Geoffrey & Schnell, Stefan (eds.).
-  2018[2015]. \emph{Multi-CAST: Multilinguial Corpus of Annotated Spoken
-  Texts}. (\url{https://lac.uni-koeln.de/en/multicast/}) (Accessed
+  2015. \emph{Multi-CAST: Multilinguial Corpus of Annotated Spoken
+  Texts}. (\url{https://multicast.aspra.uni-bamberg.de/}) (Accessed
   \emph{date}.) } If for some reason you need to cite this package on its
   own, please refer to \code{citation(multicastR)}.
 }
@@ -60,26 +68,29 @@ optional argument to select earlier versions of the annotation data.
  \itemize{\item Haig, Geoffrey & Schnell, Stefan. 2014.
   \emph{Annotations using GRAID (Grammatical Relations and Animacy in
   Discourse): Introduction and guidelines for annotators.} Version 7.0.
-  (\url{https://lac.uni-koeln.de/en/multicast/}) (Accessed 2018-03-14.) \item
-  Riester, Arndt & Baumann, Stefan. 2017. \emph{The RefLex scheme --
-  Annotation guidelines.} (SinSpeC: Working papers of the SFB 732, 14.)
-  Stuttgart: University of Stuttgart.
-  (\url{http://elib.uni-stuttgart.de/handle/11682/9028}) (Accessed
-  2018-03-14.) \item Schiborr, Nils N. & Schnell, Stefan & Thiele, Hanna.
-  2018. \emph{RefIND -- Referent Indexing in Natural-language Discourse:
-  Annotation guidelines.} Version 1.0. Unpublished Manuscript. Bamberg /
-  Melbourne: University of Bamberg / University of Melbourne.}
+  (\url{https://multicast.aspra.uni-bamberg.de/})
+
+  \item Riester, Arndt & Baumann, Stefan. 2017. The RefLex scheme --
+  Annotation guidelines. \emph{SinSpeC: Working papers of the SFB 732} 14.
+  (\url{https://dx.doi.org/10.18419/opus-9011}))
+
+  \item Schiborr, Nils N. & Schnell, Stefan & Thiele, Hanna. 2018.
+  \emph{RefIND -- Referent Indexing in Natural-language Discourse: Annotation
+  guidelines.} Version 1.1. (\url{https://multicast.aspra.uni-bamberg.de/})}
 }
 
 \examples{
-# retrieve and print the most recent version of the
-# Multi-CAST annotations
-multicast()
+  \dontrun{
+    # retrieve and print the most recent version of the
+    # Multi-CAST annotations
+    multicast()
 
-# retrieve and print the version of the annotation data
-# published in June 2016
-multicast(1606)   # or: multicast("1606")
+    # retrieve and print the version of the annotation data
+    # published in June 2016
+    multicast(1606)   # or: multicast("1606")
+  }
+
 }
 \seealso{
-\code{\link{mcindex}}
+\code{\link{mc_index}}
 }

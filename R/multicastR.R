@@ -6,10 +6,10 @@
 #' annotation data in the Multi-CAST collection (edited by Geoffrey Haig and
 #' Stefan Schnell), a database of spoken natural language texts that draws from
 #' a diverse set of languages and has been annotated across multiple levels.
-#' Annotation data is downloaded on request from the servers of the Language
-#' Archive Cologne via the \code{\link{multicast}} method. Details on the
+#' Annotation data is downloaded on command from the servers of the University
+#' of Bamberg via the \code{\link{multicast}} method. Details on the
 #' Multi-CAST project and a list of publications can be found online at
-#' \url{https://lac.uni-koeln.de/en/multicast/}.
+#' \url{https://multicast.aspra.uni-bamberg.de/}.
 #'
 #' @seealso \code{\link{multicast}}, \code{\link{mcindex}}.
 #'
@@ -23,9 +23,9 @@
 #' @section Citing Multi-CAST: Data from the Multi-CAST collection should be
 #'   cited as: \itemize{ \item Haig, Geoffrey & Schnell, Stefan (eds.).
 #'   2018[2015]. \emph{Multi-CAST: Multilinguial Corpus of Annotated Spoken
-#'   Texts}. (\url{https://lac.uni-koeln.de/en/multicast/}) (Accessed
-#'   \emph{date}.) } If for some reason you need to cite this package on its
-#'   own, please refer to \code{citation(multicastR)}.
+#'   Texts}. (\url{http://multicast.aspra.uni-bamberg.de/}) (Accessed
+#'   \emph{date}.) } If for some reason you need to cite this package
+#'   specifically, please refer to \code{citation(multicastR)}.
 #'
 #' @docType package
 #' @name multicastR
@@ -38,7 +38,8 @@ NULL
 # ----------------------------------------------------------------------
 
 # .onAttach <- function(libname, pkgname) {
-# 	packageStartupMessage("Please refer to ?multicastR for information on data licensing.")
+# 	packageStartupMessage("This is multicastR v1.1.0.
+#						  All corpus data CC-BY 4.0 International.")
 # }
 
 # ----------------------------------------------------------------------

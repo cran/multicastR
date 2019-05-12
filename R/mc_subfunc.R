@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------
 
-#' Ascertain GRAID functions of phrasal subconstituents
+#' Ascertain GRAID functions of phrasal subconstituents (WIP)
 #'
 #' In GRAID, noun phrase subconstituents are marked with \code{<ln>} or
 #' \code{<rn>} for elements respectively to the left or right of the phrase
@@ -23,69 +23,68 @@
 #'
 #' @seealso \code{\link{multicast}}
 #'
-#' @param text A \code{\link[data.table]{data.table}} in multicastR format,
-#'   containing minimally columns for \code{file}, GRAID function \code{gfunc},
+#' @param data A \code{\link[data.table]{data.table}} in multicastR format,
+#'   containing minimally columns for \code{text}, GRAID function \code{gfunc},
 #'   and GRAID form \code{gform}.
 #' @param subforms A character vector of GRAID form symbols that should be
 #'   assigned the function of the phrase they are subconstituents of.
 #'
-#' @return The \code{text} with an additional column \code{pfunc} combining the
+#' @return The data with an additional column \code{pfunc} combining the
 #'   values of \code{gfunc} with functions copied to phrasal subconstituents.
 #'
 #' @keywords internal
-#' @export
-mc_subfunc <- function(text, subforms = c("np", "pro", "refl", "indef")) {
+mc_subfunc <- function(data, subforms = c("np", "pro", "refl", "indef")) {
 	# mark all phrasal heads (i.e. rows with a GRAID function)
-	text[gfunc != "", pform := "head"]
+	data[gfunc != "", pform := "head"]
 
 	# mark all phrasal subconstituents (<ln> or <rn>)
-	text[grepl("ln", gform), pform := "ln"]
-	text[grepl("rn", gform), pform := "rn"]
+	data[grepl("ln", gform), pform := "ln"]
+	data[grepl("rn", gform), pform := "rn"]
 
 
 	# index phrase heads and non-phrase subconstituent elements sequentially
-	text[pform == "head" | is.na(pform), pid := seq(1, .N, 1), by = "file"]
+	data[pform == "head" | is.na(pform), pid := seq(1, .N, 1), by = "text"]
 
 	# label subconstituents with the index of the phrase head they are contiguous with,
 	# forward if <ln>, backward if <rn>
-	text[, pid := pid[which(!is.na(pid))], by = cumsum(!is.na(pid))]
-	text[pform == "ln", pid := NA]
+	data[, pid := pid[which(!is.na(pid))], by = cumsum(!is.na(pid))]
+	data[pform == "ln", pid := NA]
 	# for forward assignment, column order needs to be reversed!
-	text[, pid := rev(pid)]
-	text[, pid := pid[which(!is.na(pid))], by = cumsum(!is.na(pid))]
-	text[, pid := rev(pid)]
+	data[, pid := rev(pid)]
+	data[, pid := pid[which(!is.na(pid))], by = cumsum(!is.na(pid))]
+	data[, pid := rev(pid)]
 
 
 	# select only rows with phrase heads
-	hfun <- text[pform == "head", c("file", "gfunc", "pid")]
+	hfun <- data[pform == "head", c("text", "gfunc", "pid")]
 
 	# rename function column to properly identify columns on joining
 	setnames(hfun, "gfunc", "hfunc")
 
 	# join table with phrase heads with text table
-	text[hfun, hfunc := hfunc, on = c("file", "pid")]
+	data[hfun, hfunc := hfunc, on = c("text", "pid")]
 
 
 	# copy base GRAID functions
-	text[, pfunc := gfunc]
+	data[, pfunc := gfunc]
 
 	# if row contains a phrasal subconstutient with one of the GRAID forms
 	# specified in subforms and does not already have a function (usually <:poss>),
 	# then assign it the function of the phrasal head
-	text[(pform == "ln" | pform == "rn") &
+	data[(pform == "ln" | pform == "rn") &
 		 grepl(paste0("[lr]n_\\w*?(", paste(subforms, collapse = "|"), ")"), gform) &
 		 gfunc == "",
 		 pfunc := hfunc]
 
 
 	# discard working columns
-	text[, c("pform", "pid", "hfunc") := NULL]
+	data[, c("pform", "pid", "hfunc") := NULL]
 
 	# return table
-	return(text)
+	return(data)
 }
 
-# stop RMD CHECK from complaining about global variables
+# stop RMD CHECK from complaining about unbound global variables
 if (getRversion() >= "2.15.1") {
 	utils::globalVariables(c("gfunc", "pform", "pid", "hfunc", "pfunc"))
 }

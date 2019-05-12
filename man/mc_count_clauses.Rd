@@ -2,14 +2,17 @@
 % Please edit documentation in R/mc_miscellanea.R
 \name{mc_count_clauses}
 \alias{mc_count_clauses}
-\title{Count clause units in a multicastR table}
+\title{Count clause units in a multicastR table (WIP)}
 \usage{
-mc_count_clauses(text)
+mc_count_clauses(text, bytext = FALSE)
 }
 \arguments{
 \item{text}{A \code{\link[data.table]{data.table}} in multicastR format,
 containing minimally a \code{corpus} column with the names of the corpora
 and a \code{graid} column with GRAID annotation values.}
+
+\item{bytext}{Logical. If \code{FALSE}, calculate the number of clause units
+for each corpus. If \code{TRUE}, count for each text separately.}
 }
 \value{
 A \code{\link[data.table]{data.table}} with the number of valid
@@ -18,16 +21,21 @@ A \code{\link[data.table]{data.table}} with the number of valid
   of the total.
 }
 \description{
-Counts number of clause units (bounded by the \code{<##>}, \code{<#>}, or
+Counts the number of clause units (bounded by the \code{<##>}, \code{<#>}, or
 \code{<\%>} annotation symbols) in a multicastR table.
 }
 \examples{
-# count clause units in the most recent version
-# of the Multi-CAST data, by corpus
-n <- mc_count_clauses(multicast())
+  \dontrun{
+    # count clause units in the most recent version
+    # of the Multi-CAST data, by corpus
+    n <- mc_count_clauses(multicast())
 
-# number of clauses units in the whole collection
-sum(n$nClauses)
+    # count by text instead
+    m <- mc_count_clauses(multicast(), bytext = TRUE)
+
+    # number of clauses units in the whole collection
+    sum(n$nClauses)
+  }
 
 }
 \seealso{

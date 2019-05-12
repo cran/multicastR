@@ -2,17 +2,18 @@
 % Please edit documentation in R/mc_read_eaf.R
 \name{mc_meta_eaf}
 \alias{mc_meta_eaf}
-\title{Read EAF file metadata}
+\title{Read external file metadata}
 \usage{
-mc_meta_eaf(raweaf)
+mc_meta_eaf(metadata = NULL)
 }
 \arguments{
-\item{raweaf}{An XML file read by \code{xml2::read_xml}.}
+\item{metadata}{A file.}
 }
 \value{
 Nothing yet.
 }
 \description{
-To be used by the EAF-to-XML converter. Not used yet.
+Reads extra metadata not included in the EAF files from an external source.
+To be used by the EAF-to-XML converter. Not implemented yet.
 }
 \keyword{internal}

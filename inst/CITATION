@@ -5,14 +5,14 @@ citEntry(entry     = "InProceedings",
 		 author    = as.person("Nils Norman Schiborr"),
 		 booktitle = "Multi-CAST: Multilingual Corpus of Annotated Spoken Texts",
 		 editor    = personList(as.person("Geoffrey Haig"), as.person("Stefan Schnell")),
-		 year      = "2018",
-		 url       = "https://lac.uni-koeln.de/en/multicast/",
+		 year      = "2019",
+		 url       = "https://CRAN.R-project.org/package=multicastR",
 		 note	   = sprintf("R package version %s", meta$Version),
 
-		 textVersion = paste("Schiborr, Nils N. 2018.",
+		 textVersion = paste("Schiborr, Nils N. 2019.",
 		 					 "multicastR: A companion to the Multi-CAST collection.",
 		 					 paste0(sprintf("R package version %s", meta$Version), "."),
 		 					 "In Haig, Geoffrey & Schnell, Stefan (eds.),",
 		 					 "Multi-CAST: Multilingual Corpus of Annotated Spoken Texts.",
-		 					 "(https://lac.uni-koeln.de/en/multicast/) (Accessed date.)")
+		 					 "(https://CRAN.R-project.org/package=multicastR)")
 )

@@ -14,6 +14,9 @@ A \code{\link[data.table]{data.table}} containing all data fields of
   the EAF file.
 }
 \description{
-EAF files are XML files. Uses \code{xml2} package.
+Reads a specified EAF file. As EAF files are XML files, this function relies
+on the \code{xml2} package and XPath to do its job. The EAF file to be read
+must have a certain internal structure as dictated by the Multi-CAST design;
+see the Multi-CAST documentation for more information.
 }
 \keyword{internal}

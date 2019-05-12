@@ -1,7 +1,10 @@
 # ----------------------------------------------------------------------
 #' Read EAF file content
 #'
-#' EAF files are XML files. Uses \code{xml2} package.
+#' Reads a specified EAF file. As EAF files are XML files, this function relies
+#' on the \code{xml2} package and XPath to do its job. The EAF file to be read
+#' must have a certain internal structure as dictated by the Multi-CAST design;
+#' see the Multi-CAST documentation for more information.
 #'
 #' @param eaffile Path to and filename of an EAF file to be converted.
 #'
@@ -94,6 +97,15 @@ mc_read_eaf <- function(eaffile) {
 	tab_utttr <- data.table(utttr_id, utttr_ref, utttr_val)
 
 
+	# comments
+	# child of utterance, 1-to-1 relation
+	comnt_id <- xml2::xml_attr(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='add_comments']/ANNOTATION/REF_ANNOTATION"), "ANNOTATION_ID")
+	comnt_ref <- xml2::xml_attr(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='add_comments']/ANNOTATION/REF_ANNOTATION"), "ANNOTATION_REF")
+	comnt_val <- xml2::xml_text(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='add_comments']/ANNOTATION/REF_ANNOTATION/ANNOTATION_VALUE"))
+
+	tab_comnt <- data.table(comnt_id, comnt_ref, comnt_val)
+
+
 	# set a key for preserving order of annotations
 	tab_gwords[, key := seq(0, nrow(tab_gwords) - 1, 1)]
 
@@ -105,33 +117,67 @@ mc_read_eaf <- function(eaffile) {
 	tiers <- merge(tiers, tab_utter, by.x = "gwords_ref", by.y = "utter_id", all = TRUE)
 	tiers <- merge(tiers, tab_uttid, by.x = "utter_ref", by.y = "uttid_id", all = TRUE)
 	tiers <- merge(tiers, tab_utttr, by.x = "gwords_ref", by.y = "utttr_ref", all = TRUE)
+	tiers <- merge(tiers, tab_comnt, by.x = "gwords_ref", by.y = "comnt_ref", all = TRUE)
 	tiers <- merge(tiers, tab_timeslot, by.x = "uttid_tsbegin", by.y = "timeslot_id", all = FALSE)
 	tiers <- merge(tiers, tab_timeslot, by.x = "uttid_tsend", by.y = "timeslot_id", all = FALSE)
+
+
+	# !!!!!!!!!!
+	# MAKE SURE ROWS WITHOUT GWORDS ARE PLACED PROPERLY
+	# this should be taken care of in the EAF files instead!
+	setorder(tiers, by = "gwords_ref")
+	tiers[, xkey := shift(key, n = 1, type = "lag")]
+	tiers[is.na(key), key := xkey + 0.5]
+	# !!!!!!!!!!
+
 
 	# sort rows by key
 	setorder(tiers, by = "key")
 
+
+	# add EAF metadata
+	tiers[1, meta := xml2::xml_attr(xml2::xml_find_first(raweaf, "//TIER"), "ANNOTATOR")]
+	tiers[2, meta := xml2::xml_attr(xml2::xml_find_first(raweaf, "//TIER"), "PARTICIPANT")]
+	tiers[3, meta := gsub("^.*/", "", xml2::xml_attr(xml2::xml_find_first(raweaf, "//MEDIA_DESCRIPTOR"), "MEDIA_URL"))]
+	tiers[4, meta := gsub("T.*$", "", xml2::xml_attr(xml2::xml_find_first(raweaf, "//ANNOTATION_DOCUMENT"), "DATE"))]
+	tiers[5, meta := stringi::stri_split_fixed(utils::tail(stringi::stri_split_fixed(eaffile, "/", n = -1)[[1]], n = 1), ".", n = -1)[[1]][1]]
+
+	if (is.na(tiers[3, meta])) {
+		tiers[3, meta := "NA"]
+	}
+
+	# !!!!!!!!!!
+	# REMOVE SPURIOUS LINEBREAKS AND TABSTOPS
+	# these should be taken care of in the EAF files!
+	tiers[, (names(tiers)) := lapply(.SD, function(x) gsub("\\n|\\t", "", x)), .SDcols = names(tiers)]
+	# !!!!!!!!!!
+
+
 	# return table
 	return(tiers)
+}
+
+# stop RMD CHECK from complaining about unbound global variables
+if (getRversion() >= "2.15.1") {
+	utils::globalVariables(c("meta"))
 }
 
 # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
 
-#' Read EAF file metadata
+#' Read external file metadata
 #'
-#' To be used by the EAF-to-XML converter. Not used yet.
+#' Reads extra metadata not included in the EAF files from an external source.
+#' To be used by the EAF-to-XML converter. Not implemented yet.
 #'
-#' @param raweaf An XML file read by \code{xml2::read_xml}.
+#' @param metadata A file.
 #'
 #' @return Nothing yet.
 #'
 #' @keywords internal
-mc_meta_eaf <- function(raweaf) {
-	annotators <- xml2::xml_attr(xml2::xml_find_first(raweaf, "//TIER"), "ANNOTATOR")
-	speakerid <- xml2::xml_attr(xml2::xml_find_first(raweaf, "//TIER"), "PARTICIPANT")
-	changedate <- sub("T.*$", "", xml2::xml_attr(xml2::xml_find_first(raweaf, "//ANNOTATION_DOCUMENT"), "DATE"))
+mc_meta_eaf <- function(metadata = NULL) {
+	return(NULL)
 }
 
 # ----------------------------------------------------------------------

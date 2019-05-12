@@ -2,20 +2,20 @@
 % Please edit documentation in R/mc_subfunc.R
 \name{mc_subfunc}
 \alias{mc_subfunc}
-\title{Ascertain GRAID functions of phrasal subconstituents}
+\title{Ascertain GRAID functions of phrasal subconstituents (WIP)}
 \usage{
-mc_subfunc(text, subforms = c("np", "pro", "refl", "indef"))
+mc_subfunc(data, subforms = c("np", "pro", "refl", "indef"))
 }
 \arguments{
-\item{text}{A \code{\link[data.table]{data.table}} in multicastR format,
-containing minimally columns for \code{file}, GRAID function \code{gfunc},
+\item{data}{A \code{\link[data.table]{data.table}} in multicastR format,
+containing minimally columns for \code{text}, GRAID function \code{gfunc},
 and GRAID form \code{gform}.}
 
 \item{subforms}{A character vector of GRAID form symbols that should be
 assigned the function of the phrase they are subconstituents of.}
 }
 \value{
-The \code{text} with an additional column \code{pfunc} combining the
+The data with an additional column \code{pfunc} combining the
   values of \code{gfunc} with functions copied to phrasal subconstituents.
 }
 \description{
