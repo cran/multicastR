@@ -20,13 +20,13 @@
 #' @return Nothing.
 #'
 #' @examples
-#'   \dontrun{
-#'     # read all EAF files in the current working directory,
-#'     # then write TeX files to the same location
-#'     mc_eaf_to_tex()
-#'   }
+#' \dontrun{
+#'   # read all EAF files in the current working directory,
+#'   # then write TeX files to the same location
+#'   mc_eaf_to_tex()
+#' }
 #'
-#' @export
+#' @keywords internal
 mc_eaf_to_tex <- function(readfrom = getwd(), recursive = FALSE, writeto = getwd()) {
 
 	# get list of files to read
@@ -42,7 +42,7 @@ mc_eaf_to_tex <- function(readfrom = getwd(), recursive = FALSE, writeto = getwd
 	message("All done!")
 
 	# write TEX files
-	invisible(mc_write_tex(rbindlist(mclist, fill = TRUE), writeto))
+	invisible(mc_write_tex(data.table::rbindlist(mclist, fill = TRUE), writeto))
 }
 
 # ----------------------------------------------------------------------
@@ -103,10 +103,10 @@ mc_write_tex <- function(texts, writeto) {
 		tex <- append(tex, "\n% ------------------------------------------------------------------------------------------ %\n")
 
 		# escape active characters
-		mctext[, utter_val := gsub("(\\[)", "{\\[", utter_val)]
-		mctext[, utter_val := gsub("(\\])", "\\]}", utter_val)]
-		mctext[, utttr_val := gsub("(\\[)", "{\\[", utttr_val)]
-		mctext[, utttr_val := gsub("(\\])", "\\]}", utttr_val)]
+		mctext[, utter_val := gsub("(\\[)", "{\\[}", utter_val)]
+		mctext[, utter_val := gsub("(\\])", "{\\]}", utter_val)]
+		mctext[, utttr_val := gsub("(\\[)", "{\\[}", utttr_val)]
+		mctext[, utttr_val := gsub("(\\])", "{\\]}", utttr_val)]
 	#	mctext[, utter_val := gsub("([&#%])", "\\\\\\1", utter_val)]
 	#	mctext[, utttr_val := gsub("([&#%])", "\\\\\\1", utter_val)]
 

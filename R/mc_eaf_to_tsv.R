@@ -34,20 +34,20 @@
 #'   containing the annotation values of the EAF files read.
 #'
 #' @examples
-#'   \dontrun{
-#'     # read all EAF files in the current working directory,
-#'     # returns a data table of the kind accessed by multicast()
-#'     mc_eaf_to_tsv()
+#' \dontrun{
+#'   # read all EAF files in the current working directory,
+#'   # returns a data table of the kind accessed by multicast()
+#'   mc_eaf_to_tsv()
 #'
-#'     # also produce a file 'mydata.tsv' containing all read data
-#'     mc_eaf_to_tsv(write = TRUE, filename = "mydata")
+#'   # also produce a file 'mydata.tsv' containing all read data
+#'   mc_eaf_to_tsv(write = TRUE, filename = "mydata")
 #'
-#'     # instead of a single monolithic table, return a list
-#'     # of tables and produce one TSV file for each text
-#'     mc_eaf_to_tsv(write = TRUE, split = TRUE)
-#'   }
+#'   # instead of a single monolithic table, return a list
+#'   # of tables and produce one TSV file for each text
+#'   mc_eaf_to_tsv(write = TRUE, split = TRUE)
+#' }
 #'
-#' @export
+#' @keywords internal
 mc_eaf_to_tsv <- function(readfrom = getwd(), recursive = FALSE, split = FALSE,
 						  write = FALSE, writeto = getwd(), filename = "") {
 
@@ -62,7 +62,7 @@ mc_eaf_to_tsv <- function(readfrom = getwd(), recursive = FALSE, split = FALSE,
 	message(paste0("Reading ", length(filelist), " files."))
 	mclist <- lapply(filelist, mc_prep_tsv)
 	message("All done!")
-	mcall <- rbindlist(mclist, fill = TRUE)
+	mcall <- data.table::rbindlist(mclist, fill = TRUE)
 
 	# write data to file?
 	if (write == TRUE) {

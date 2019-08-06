@@ -45,15 +45,16 @@ necessary structure of the EAF files, as well as about the structure of the
 XML files produced by this function.
 }
 \examples{
-  \dontrun{
-    # read all EAF files in the current working directory
-    # and write one XML file for each text to the same
-    # location
-    mc_eaf_to_xml()
+\dontrun{
+  # read all EAF files in the current working directory
+  # and write one XML file for each text to the same
+  # location
+  mc_eaf_to_xml()
 
-    # same as above, but bundle all data into one large XML file
-    # for entire collection plus one XML file for each corpus
-    mc_eaf_to_xml(split = TRUE)
-  }
+  # same as above, but bundle all data into one large XML file
+  # for entire collection plus one XML file for each corpus
+  mc_eaf_to_xml(split = TRUE)
+}
 
 }
+\keyword{internal}

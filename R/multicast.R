@@ -26,7 +26,7 @@
 #' @section References: \itemize{\item Haig, Geoffrey & Schnell, Stefan. 2014.
 #'   \emph{Annotations using GRAID (Grammatical Relations and Animacy in
 #'   Discourse): Introduction and guidelines for annotators.} Version 7.0.
-#'   (\url{https://multicast.aspra.uni-bamberg.de/})
+#'   (\url{https://multicast.aspra.uni-bamberg.de/#annotations})
 #'
 #'   \item Riester, Arndt & Baumann, Stefan. 2017. The RefLex scheme --
 #'   Annotation guidelines. \emph{SinSpeC: Working papers of the SFB 732} 14.
@@ -34,9 +34,10 @@
 #'
 #'   \item Schiborr, Nils N. & Schnell, Stefan & Thiele, Hanna. 2018.
 #'   \emph{RefIND -- Referent Indexing in Natural-language Discourse: Annotation
-#'   guidelines.} Version 1.1. (\url{https://multicast.aspra.uni-bamberg.de/})}
+#'   guidelines.} Version 1.1.
+#'   (\url{https://multicast.aspra.uni-bamberg.de/#annotations})}
 #'
-#' @seealso \code{\link{mc_index}}
+#' @seealso \code{\link{mc_index}}, \code{\link{mc_referents}}
 #'
 #' @param vkey A numeric or character vector of length 1 specifying the
 #'   requested version of the annotation values. Must be one of the four-digit
@@ -68,15 +69,15 @@
 #'   scheme (Riester & Baumann 2017).} }
 #'
 #' @examples
-#'   \dontrun{
-#'     # retrieve and print the most recent version of the
-#'     # Multi-CAST annotations
-#'     multicast()
+#' \dontrun{
+#'   # retrieve and print the most recent version of the
+#'   # Multi-CAST annotations
+#'   multicast()
 #'
-#'     # retrieve and print the version of the annotation data
-#'     # published in June 2016
-#'     multicast(1606)   # or: multicast("1606")
-#'   }
+#'   # retrieve and print the version of the annotation data
+#'   # published in May 2019
+#'   multicast(1905)   # or: multicast("1905")
+#' }
 #'
 #' @export
 multicast <- function(vkey, legacy.colnames = FALSE) {
@@ -198,15 +199,15 @@ multicast <- function(vkey, legacy.colnames = FALSE) {
 #'   the version.} }
 #'
 #' @examples
-#'   \dontrun{
-#'     # retrieve and print version index
-#'     mc_index()
-#'   }
+#' \dontrun{
+#'   # retrieve and print version index
+#'   mc_index()
+#' }
 #'
 #' @export
 mc_index <- function() {
 	# fetch version index
-	path <- "https://multicast.aspra.uni-bamberg.de/data/mcr/multicast_index.tsv"
+	path <- "https://multicast.aspra.uni-bamberg.de/data/mcr/mc_index.tsv"
 	message("Retrieving version index...")
 	tryCatch(
 		suppressWarnings(

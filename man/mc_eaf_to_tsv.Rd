@@ -47,17 +47,18 @@ conversion fails. See the Multi-CAST documentation for details. File are
 added to the TSV table in the alphabetical order of their file names.
 }
 \examples{
-  \dontrun{
-    # read all EAF files in the current working directory,
-    # returns a data table of the kind accessed by multicast()
-    mc_eaf_to_tsv()
+\dontrun{
+  # read all EAF files in the current working directory,
+  # returns a data table of the kind accessed by multicast()
+  mc_eaf_to_tsv()
 
-    # also produce a file 'mydata.tsv' containing all read data
-    mc_eaf_to_tsv(write = TRUE, filename = "mydata")
+  # also produce a file 'mydata.tsv' containing all read data
+  mc_eaf_to_tsv(write = TRUE, filename = "mydata")
 
-    # instead of a single monolithic table, return a list
-    # of tables and produce one TSV file for each text
-    mc_eaf_to_tsv(write = TRUE, split = TRUE)
-  }
+  # instead of a single monolithic table, return a list
+  # of tables and produce one TSV file for each text
+  mc_eaf_to_tsv(write = TRUE, split = TRUE)
+}
 
 }
+\keyword{internal}

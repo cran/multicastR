@@ -11,7 +11,8 @@
 #' Multi-CAST project and a list of publications can be found online at
 #' \url{https://multicast.aspra.uni-bamberg.de/}.
 #'
-#' @seealso \code{\link{multicast}}, \code{\link{mcindex}}.
+#' @seealso \code{\link{multicast}}, \code{\link{mc_index}},
+#'   \code{\link{mc_metadata}}, \code{\link{mc_referents}}
 #'
 #' @section Licensing: The Multi-CAST annotation data accessed by the
 #'   \code{multicast} method is published under a \emph{Create Commons

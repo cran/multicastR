@@ -23,10 +23,10 @@ a \code{\link[data.table]{data.table}}. The value in the leftmost
 access to earlier versions of the annotations.
 }
 \examples{
-  \dontrun{
-    # retrieve and print version index
-    mc_index()
-  }
+\dontrun{
+  # retrieve and print version index
+  mc_index()
+}
 
 }
 \seealso{

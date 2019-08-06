@@ -7,7 +7,7 @@
 #'
 #' @seealso \code{\link{multicast}}
 #'
-#' @param text A \code{\link[data.table]{data.table}} in multicastR format,
+#' @param mcdata A \code{\link[data.table]{data.table}} in multicastR format,
 #'   containing minimally a \code{corpus} column with the names of the corpora
 #'   and a \code{graid} column with GRAID annotation values.
 #' @param bytext Logical. If \code{FALSE}, calculate the number of clause units
@@ -19,21 +19,20 @@
 #'   of the total.
 #'
 #' @examples
-#'   \dontrun{
-#'     # count clause units in the most recent version
-#'     # of the Multi-CAST data, by corpus
-#'     n <- mc_count_clauses(multicast())
+#' \dontrun{
+#'   # count clause units in the most recent version
+#'   # of the Multi-CAST data, by corpus
+#'   n <- mc_count_clauses(multicast())
 #'
-#'     # count by text instead
-#'     m <- mc_count_clauses(multicast(), bytext = TRUE)
+#'   # count by text instead
+#'   m <- mc_count_clauses(multicast(), bytext = TRUE)
 #'
-#'     # number of clauses units in the whole collection
-#'     sum(n$nClauses)
-#'   }
+#'   # number of clauses units in the whole collection
+#'   sum(n$nClauses)
+#' }
 #'
-#' @keywords internal
 #' @export
-mc_count_clauses <- function(text, bytext = FALSE) {
+mc_clauses <- function(mcdata, bytext = FALSE) {
 	# count by corpus or by text?
 	if (bytext == TRUE) {
 		byX <- c("corpus", "text")
@@ -42,11 +41,11 @@ mc_count_clauses <- function(text, bytext = FALSE) {
 	}
 
 	# count all clauses
-	cnts <- text[grepl("^#", graid), .N, by = byX]
+	cnts <- mcdata[grepl("^#", graid), .N, by = byX]
 	setnames(cnts, "N", "nAll")
 
 	# count NC clauses
-	cnts[text[grepl("^#nc", graid), .N, by = byX], nNC := N, on = byX]
+	cnts[mcdata[grepl("^#nc", graid), .N, by = byX], nNC := N, on = byX]
 
 	# set nNC to 0 if there are no NC clauses (by defauly NA)
 	cnts[is.na(nNC), nNC := 0]
@@ -73,3 +72,26 @@ if (getRversion() >= "2.15.1") {
 }
 
 # ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
+
+#' Count clause units in a multicastR table (WIP)
+#'
+#' Deprecated with multicastR 1.2.0. Use \code{\link{mc_clauses}} instead.
+#'
+#' @param mcdata A \code{\link[data.table]{data.table}} in multicastR format,
+#'   containing minimally a \code{corpus} column with the names of the corpora
+#'   and a \code{graid} column with GRAID annotation values.
+#' @param bytext Logical. If \code{FALSE}, calculate the number of clause units
+#'   for each corpus. If \code{TRUE}, count for each text separately.
+#'
+#' @return A \code{\link[data.table]{data.table}} with the number of valid
+#'   clause units in each corpus, the total number of clause units, the number
+#'   of non-analyzed clause units ("NC"), and the percentage the later make up
+#'   of the total.
+#'
+#' @export
+mc_count_clauses <- function(mcdata, bytext = FALSE) {
+	.Deprecated("mc_clauses")
+	mc_clauses(mcdata, bytext)
+}

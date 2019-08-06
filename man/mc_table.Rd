@@ -36,12 +36,12 @@ the user. The TEX files that can optionally be written by this function are
 used for the 'Corpus counts' in the Multi-CAST documentation.
 }
 \examples{
- \dontrun{
-    # generate a summary table for the entire collection
-    mc <- multicast()
-    mc_table(mc)
+\dontrun{
+  # generate a summary table for the entire collection
+  mc <- multicast()
+  mc_table(mc)
 
-    # generate a summary table for the English corpus
-    mc_table(mc[corpus == "english", ])
-  }
+  # generate a summary table for the English corpus
+  mc_table(mc[corpus == "english", ])
+}
 }

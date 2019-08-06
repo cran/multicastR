@@ -30,10 +30,11 @@ for this function; it's sole purpose is to facilitate the creation of the
 'Translated texts' supplementary materials included with Multi-CAST.
 }
 \examples{
-  \dontrun{
-    # read all EAF files in the current working directory,
-    # then write TeX files to the same location
-    mc_eaf_to_tex()
-  }
+\dontrun{
+  # read all EAF files in the current working directory,
+  # then write TeX files to the same location
+  mc_eaf_to_tex()
+}
 
 }
+\keyword{internal}

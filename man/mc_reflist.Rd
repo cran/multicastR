@@ -2,7 +2,7 @@
 % Please edit documentation in R/mc_reflist.R
 \name{mc_reflist}
 \alias{mc_reflist}
-\title{Convert TSV referent lists to TEX}
+\title{Convert TSV referent lists to TSV and TEX}
 \usage{
 mc_reflist(readfrom = getwd(), recursive = FALSE, writeto = getwd())
 }
@@ -20,19 +20,21 @@ subdirectories.}
 Nothing.
 }
 \description{
-\code{mc_reflist} reads lists of referents in TSV format and outputs them as
-files with TEX markup that can be rendered as a multi-column parallel text by
-the TeX package \code{paracol}. Regular users of \code{multicastR} will
+\code{mc_reflist} reads lists of referents in TSV format and outputs them (i)
+as TSV files bundled for the whole collection and (ii) by corpus, and (iii)
+as files with TEX markup that can be rendered as a multi-column parallel text
+by the TeX package \code{paracol}. Regular users of \code{multicastR} will
 likely find no use for this function; it's sole purpose is to facilitate the
 creation of the 'List of referents' supplementary materials included with
 Multi-CAST.
 }
 \examples{
-  \dontrun{
-    # read all TSV files in the current working directory
-    # and write one TEX file for each TSV file to the same
-    # location
-    mc_reflist()
-  }
+\dontrun{
+  # read all TSV files in the current working directory
+  # and write one TEX file for each TSV file to the same
+  # location
+  mc_reflist()
+}
 
 }
+\keyword{internal}

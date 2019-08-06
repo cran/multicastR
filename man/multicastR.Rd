@@ -34,5 +34,6 @@ Multi-CAST project and a list of publications can be found online at
 }
 
 \seealso{
-\code{\link{multicast}}, \code{\link{mcindex}}.
+\code{\link{multicast}}, \code{\link{mc_index}},
+  \code{\link{mc_metadata}}, \code{\link{mc_referents}}
 }

@@ -68,7 +68,7 @@ annotation data to ensure scientific accountability and reproducability.
  \itemize{\item Haig, Geoffrey & Schnell, Stefan. 2014.
   \emph{Annotations using GRAID (Grammatical Relations and Animacy in
   Discourse): Introduction and guidelines for annotators.} Version 7.0.
-  (\url{https://multicast.aspra.uni-bamberg.de/})
+  (\url{https://multicast.aspra.uni-bamberg.de/#annotations})
 
   \item Riester, Arndt & Baumann, Stefan. 2017. The RefLex scheme --
   Annotation guidelines. \emph{SinSpeC: Working papers of the SFB 732} 14.
@@ -76,21 +76,22 @@ annotation data to ensure scientific accountability and reproducability.
 
   \item Schiborr, Nils N. & Schnell, Stefan & Thiele, Hanna. 2018.
   \emph{RefIND -- Referent Indexing in Natural-language Discourse: Annotation
-  guidelines.} Version 1.1. (\url{https://multicast.aspra.uni-bamberg.de/})}
+  guidelines.} Version 1.1.
+  (\url{https://multicast.aspra.uni-bamberg.de/#annotations})}
 }
 
 \examples{
-  \dontrun{
-    # retrieve and print the most recent version of the
-    # Multi-CAST annotations
-    multicast()
+\dontrun{
+  # retrieve and print the most recent version of the
+  # Multi-CAST annotations
+  multicast()
 
-    # retrieve and print the version of the annotation data
-    # published in June 2016
-    multicast(1606)   # or: multicast("1606")
-  }
+  # retrieve and print the version of the annotation data
+  # published in May 2019
+  multicast(1905)   # or: multicast("1905")
+}
 
 }
 \seealso{
-\code{\link{mc_index}}
+\code{\link{mc_index}}, \code{\link{mc_referents}}
 }

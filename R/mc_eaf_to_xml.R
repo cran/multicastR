@@ -31,18 +31,18 @@
 #'   drawn.
 #'
 #' @examples
-#'   \dontrun{
-#'     # read all EAF files in the current working directory
-#'     # and write one XML file for each text to the same
-#'     # location
-#'     mc_eaf_to_xml()
+#' \dontrun{
+#'   # read all EAF files in the current working directory
+#'   # and write one XML file for each text to the same
+#'   # location
+#'   mc_eaf_to_xml()
 #'
-#'     # same as above, but bundle all data into one large XML file
-#'     # for entire collection plus one XML file for each corpus
-#'     mc_eaf_to_xml(split = TRUE)
-#'   }
+#'   # same as above, but bundle all data into one large XML file
+#'   # for entire collection plus one XML file for each corpus
+#'   mc_eaf_to_xml(split = TRUE)
+#' }
 #'
-#' @export
+#' @keywords internal
 mc_eaf_to_xml <- function(vkey = "", readfrom = getwd(), recursive = FALSE,
 						  split = FALSE, writeto = getwd(), filename = "",
 						  skipempty = TRUE) {
@@ -57,7 +57,7 @@ mc_eaf_to_xml <- function(vkey = "", readfrom = getwd(), recursive = FALSE,
 	# read each EAF file and convert it to a data table
 	message(paste0("Reading ", length(filelist), " files."))
 	mclist <- lapply(filelist, mc_prep_xml)
-	mcall <- rbindlist(mclist, fill = TRUE)
+	mcall <- data.table::rbindlist(mclist, fill = TRUE)
 
 	# check for empty vkey
 	# if missing, generate from current year and month
@@ -135,6 +135,9 @@ mc_prep_xml <- function(eaffile) {
 	mcr[grepl("#|%", graid_val) & ganim != "" & !grepl("[12hd]", ganim), gform := paste0(gform, ".", ganim)]
 	mcr[grepl("#|%", graid_val) & ganim != "" & !grepl("[12hd]", ganim), ganim := ""]
 
+	# add column with file name
+	mcr[, file := mcr[5, meta]]
+
 	# give a status update
 	message(paste0("Finished reading text '",
 				   mcr[1, corpus], "_",
@@ -193,19 +196,15 @@ mc_build_xml <- function(mctext, vkey, skipempty = TRUE) {
 									attrs = c(c_name = corpus_name))
 
 
-		# - FILE - - - - - - - - - -
+		# - TEXT - - - - - - - - - -
 		texts <- unique(mctext[corpus == corpora[i_corpus], text])
 
 		for (i_text in 1:length(texts)) {
-			time_file <- proc.time()[[3]]
+			time_text <- proc.time()[[3]]
 
 			# text name
 			text_name <- texts[i_text]
 			message(paste0("|  |  |- Writing text '", text_name, "' (", i_text, "/", length(texts), ")."))
-
-			# file name
-			meta_tmp <- mctext[text == texts[i_text] & !is.na(meta), meta]
-			file_name <- paste0(meta_tmp[seq(5, length(meta_tmp), 5)], ".eaf", collapse = " ")
 
 			# annotators
 			annotators <- mctext[text == texts[i_text], meta][1]
@@ -214,149 +213,165 @@ mc_build_xml <- function(mctext, vkey, skipempty = TRUE) {
 			# speaker
 			speaker_id <- mctext[text == texts[i_text], meta][2]
 
-			# audio
-			audio_name <- paste0(meta_tmp[seq(3, length(meta_tmp), 5)], collapse = " ")
-
-			# updated
-			updated <- paste0(meta_tmp[seq(4, length(meta_tmp), 5)], collapse = " ")
-
 			# create file node
-			n_file <- XML::newXMLNode(parent = n_corpus,
+			n_text <- XML::newXMLNode(parent = n_corpus,
 									  name = "text",
-									  attrs = c(t_name = paste0(text_name),
-									  		    f_name = file_name,
+									  attrs = c(t_name = text_name,
 									  		    annotators = annotators,
-									  		    speaker = speaker_id,
-									  		    audio = audio_name,
-									  		    updated = updated))
+									  		    speaker = speaker_id))
+
+				# - FILE - - - - - - - - - -
+				files <- unique(mctext[text == texts[i_text], file])
+
+				for (i_file in 1:length(files)) {
+					time_file <- proc.time()[[3]]
+
+					# file name
+					file_name <- files[i_file]
+					message(paste0("|  |  |  |- Writing file '", file_name, "' (", i_file, "/", length(files), ")."))
+
+					# audio
+					audio_name <- mctext[3, meta]
+
+					# updated
+					updated <- mctext[4, meta]
+
+					# create file node
+					n_file <- XML::newXMLNode(parent = n_text,
+											  name = "file",
+											  attrs = c(f_name = file_name,
+											  		    audio = audio_name,
+											  		    updated = updated))
 
 
-			# - UTTERANCE UNIT - - - - - - - - - -
-			for (i_utterance in 1:length(unique(mctext[text == texts[i_text], uid]))) {
-				# utterance ID
-				utt_uid <- unique(mctext[text == texts[i_text], uid])[i_utterance]
+						# - UTTERANCE UNIT - - - - - - - - - -
+						for (i_utterance in 1:length(unique(mctext[file == files[i_file], uid]))) {
+							# utterance ID
+							utt_uid <- unique(mctext[file == files[i_file], uid])[i_utterance]
 
-				# start time
-				utt_start <- mctext[text == texts[i_text] & uid == utt_uid, timeslot_val.x][1]
+							# start time
+							utt_start <- mctext[file == files[i_file] & uid == utt_uid, timeslot_val.x][1]
 
-				# end time
-				utt_end <- mctext[text == texts[i_text] & uid == utt_uid, timeslot_val.y][1]
+							# end time
+							utt_end <- mctext[file == files[i_file] & uid == utt_uid, timeslot_val.y][1]
 
-				# create unit node
-				n_unit <- XML::newXMLNode(parent = n_file,
-										  name = "unit",
-										  attrs = c(uid = utt_uid,
-										  		   start_time = utt_start,
-										  		   end_time = utt_end,
-										  		   unit = "ms"))
+							# create unit node
+							n_unit <- XML::newXMLNode(parent = n_file,
+													  name = "unit",
+													  attrs = c(uid = utt_uid,
+													  		   start_time = utt_start,
+													  		   end_time = utt_end))
 
-				# - UTTERANCE ID - - - - - - - - - -
-				# utterance ID
-				utt_id <- mctext[text == texts[i_text] & uid == utt_uid, uttid_val][1]
+							# - UTTERANCE ID - - - - - - - - - -
+							# utterance ID
+							utt_id <- mctext[file == files[i_file] & uid == utt_uid, uttid_val][1]
 
-				# create utterance ID node
-				n_uttid <- XML::newXMLNode(parent = n_unit,
-										   name = "utt_id",
-										   utt_id)
+							# create utterance ID node
+							n_uttid <- XML::newXMLNode(parent = n_unit,
+													   name = "utterance_id",
+													   utt_id)
 
-				# - UTTERANCE TEXT - - - - - - - - - -
-				# utterance text
-				utt_text <- mctext[text == texts[i_text] & uid == utt_uid, utter_val][1]
+							# - UTTERANCE TEXT - - - - - - - - - -
+							# utterance text
+							utt_text <- mctext[file == files[i_file] & uid == utt_uid, utter_val][1]
 
-				# create utterance text node
-				n_utterance <- XML::newXMLNode(parent = n_unit,
-											   name = "utterance",
-											   utt_text)
+							# create utterance text node
+							n_utterance <- XML::newXMLNode(parent = n_unit,
+														   name = "utterance",
+														   utt_text)
 
-				# - UTTERANCE TRANSLATION - - - - - - - - - -
-				# translation
-				utt_trans <- mctext[text == texts[i_text] & uid == utt_uid, utttr_val][1]
+							# - UTTERANCE TRANSLATION - - - - - - - - - -
+							# translation
+							utt_trans <- mctext[file == files[i_file] & uid == utt_uid, utttr_val][1]
 
-				# create utterance translation node
-				n_translation <- XML::newXMLNode(parent = n_unit,
-												 name = "utt_trans",
-												 utt_trans)
+							# create utterance translation node
+							n_translation <- XML::newXMLNode(parent = n_unit,
+															 name = "utterance_translation",
+															 utt_trans)
 
-				# - COMMENTS - - - - - - - - - -
-				# comments
-				utt_comments <- mctext[text == texts[i_text] & uid == utt_uid, comnt_val][1]
+							# - COMMENTS - - - - - - - - - -
+							# comments
+							utt_comments <- mctext[file == files[i_file] & uid == utt_uid, comnt_val][1]
 
-				# check if current comments slot is empty,
-				# do not create empty nodes if skipempty = TRUE
-				if (skipempty == FALSE | !is.na(utt_comments)) {
-					# create comments node
-					n_comments <- XML::newXMLNode(parent = n_unit,
-												  name = "add_comments",
-												  utt_comments)
-				}
+							# check if current comments slot is empty,
+							# do not create empty nodes if skipempty = TRUE
+							if (skipempty == FALSE | !is.na(utt_comments)) {
+								# create comments node
+								n_comments <- XML::newXMLNode(parent = n_unit,
+															  name = "add_comments",
+															  utt_comments)
+							}
 
-				# - ANNOTATIONS - - - - - - - - - -
-				# create annotations node
-				n_annotations <- XML::newXMLNode(parent = n_unit,
-												 name = "annotations")
+							# - ANNOTATIONS - - - - - - - - - -
+							# create annotations node
+							n_annotations <- XML::newXMLNode(parent = n_unit,
+															 name = "annotations")
 
-				# - SEGMENT - - - - - - - - - -
-				for (i_segment in 1:nrow(mctext[text == texts[i_text] & uid == utt_uid])) {
-					# create segment node
-					n_segment <- XML::newXMLNode(parent = n_annotations,
-												 name = "segment")
+							# - SEGMENT - - - - - - - - - -
+							for (i_segment in 1:nrow(mctext[file == files[i_file] & uid == utt_uid])) {
+								# create segment node
+								n_segment <- XML::newXMLNode(parent = n_annotations,
+															 name = "segment")
 
-					# - GRAMMATICAL WORDS - - - - - - - - - -
-					# grammatical words
-					ann_word <- mctext[text == texts[i_text] & uid == utt_uid][i_segment, gwords_val]
+								# - GRAMMATICAL WORDS - - - - - - - - - -
+								# grammatical words
+								ann_word <- mctext[file == files[i_file] & uid == utt_uid][i_segment, gwords_val]
 
-					# create grammatical words node
-					n_word <- XML::newXMLNode(parent = n_segment,
-											  name = "gword",
-											  ann_word)
+								# create grammatical words node
+								n_word <- XML::newXMLNode(parent = n_segment,
+														  name = "gword",
+														  ann_word)
 
-					# - GLOSS - - - - - - - - - -
-					# glosses
-					ann_gloss <- mctext[text == texts[i_text] & uid == utt_uid][i_segment, gloss_val]
+								# - GLOSS - - - - - - - - - -
+								# glosses
+								ann_gloss <- mctext[file == files[i_file] & uid == utt_uid][i_segment, gloss_val]
 
-					# create gloss node
-					n_gloss <- XML::newXMLNode(parent = n_segment,
-											   name = "gloss",
-											   ann_gloss)
+								# create gloss node
+								n_gloss <- XML::newXMLNode(parent = n_segment,
+														   name = "gloss",
+														   ann_gloss)
 
-					# - GRAID - - - - - - - - - -
-					# GRAID
-					ann_graid <- mctext[text == texts[i_text] & uid == utt_uid][i_segment, graid_val]
+								# - GRAID - - - - - - - - - -
+								# GRAID
+								ann_graid <- mctext[file == files[i_file] & uid == utt_uid][i_segment, graid_val]
 
-					# create GRAID node
-					n_graid <- XML::newXMLNode(parent = n_segment,
-											   name = "graid",
-											   ann_graid)
+								# create GRAID node
+								n_graid <- XML::newXMLNode(parent = n_segment,
+														   name = "graid",
+														   ann_graid)
 
-					# - REFIND - - - - - - - - - -
-					# RefIND
-					ann_refind <- mctext[text == texts[i_text] & uid == utt_uid][i_segment, refind_val]
+								# - REFIND - - - - - - - - - -
+								# RefIND
+								ann_refind <- mctext[file == files[i_file] & uid == utt_uid][i_segment, refind_val]
 
-					# check if current RefIND slot is empty,
-					# do not create empty nodes if skipempty = TRUE
-					if (skipempty == FALSE | !is.na(ann_refind)) {
-						# create RefIND node
-						n_refind <- XML::newXMLNode(parent = n_segment,
-													name = "refind",
-													ann_refind)
+								# check if current RefIND slot is empty,
+								# do not create empty nodes if skipempty = TRUE
+								if (skipempty == FALSE | !is.na(ann_refind)) {
+									# create RefIND node
+									n_refind <- XML::newXMLNode(parent = n_segment,
+																name = "refind",
+																ann_refind)
+								}
+
+								# - RefLex - - - - - - - - - -
+								# RefLex
+								ann_reflex <- mctext[file == files[i_file] & uid == utt_uid][i_segment, reflex_val]
+
+								# check if current RefLex slot is empty,
+								# do not create empty nodes if skipempty = TRUE
+								if (skipempty == FALSE | !is.na(ann_reflex)) {
+									# create RefLex node
+									n_reflex <- XML::newXMLNode(parent = n_segment,
+																name = "reflex",
+																ann_reflex)
+								}
+							}
+						}
+
+						message(paste0("|  |  |  `- File finished in ", round(proc.time()[[3]] - time_file, 0), "s!"))
 					}
 
-					# - RefLex - - - - - - - - - -
-					# RefLex
-					ann_reflex <- mctext[text == texts[i_text] & uid == utt_uid][i_segment, reflex_val]
-
-					# check if current RefLex slot is empty,
-					# do not create empty nodes if skipempty = TRUE
-					if (skipempty == FALSE | !is.na(ann_reflex)) {
-						# create RefLex node
-						n_reflex <- XML::newXMLNode(parent = n_segment,
-													name = "reflex",
-													ann_reflex)
-					}
-				}
-			}
-
-			message(paste0("|  |  `- File finished in ", round(proc.time()[[3]] - time_file, 0), "s!"))
+			message(paste0("|  |  `- Text finished in ", round(proc.time()[[3]] - time_text, 0), "s!"))
 		}
 
 		message(paste0("|  `- Corpus finished in ", round(proc.time()[[3]] - time_corpus, 0), "s!"))
@@ -395,8 +410,11 @@ mc_write_xml <- function(mctext, writeto, filename) {
 	tmp <- strsplit(tmp, "\n")[[1]]
 	tmp <- gsubfn::gsubfn("^( +)", x ~ sprintf("%*s", 2 * nchar(x), " "), tmp)	# add indentation
 
-	if (grepl("/$", writeto)) { fpath <- paste0(writeto, filename, ".xml") }
-	else { fpath <- paste0(writeto, "/", filename, ".xml") }
+	if (grepl("/$", writeto)) {
+		fpath <- paste0(writeto, filename, ".xml")
+	} else {
+		fpath <- paste0(writeto, "/", filename, ".xml")
+	}
 
 	write(tmp, file = fpath)
 

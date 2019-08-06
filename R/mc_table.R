@@ -25,14 +25,14 @@
 #' @export
 #'
 #' @examples
-#'  \dontrun{
-#'     # generate a summary table for the entire collection
-#'     mc <- multicast()
-#'     mc_table(mc)
+#' \dontrun{
+#'   # generate a summary table for the entire collection
+#'   mc <- multicast()
+#'   mc_table(mc)
 #'
-#'     # generate a summary table for the English corpus
-#'     mc_table(mc[corpus == "english", ])
-#'   }
+#'   # generate a summary table for the English corpus
+#'   mc_table(mc[corpus == "english", ])
+#' }
 mc_table <- function(data, by = "all", format = "wide", write = FALSE, writeto = getwd(), output = "tex") {
 
 	# define GRAID symbols to be listed in the table
