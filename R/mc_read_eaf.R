@@ -79,11 +79,11 @@ mc_read_eaf <- function(eaffile) {
 	tab_refind <- data.table(refind_id, refind_ref, refind_val)
 
 
-	# tier reflex
+	# tier isnref
 	# child of refind, 1-to-1 relation
-	reflex_id <- xml2::xml_attr(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='reflex']/ANNOTATION/REF_ANNOTATION"), "ANNOTATION_ID")
-	reflex_ref <- xml2::xml_attr(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='reflex']/ANNOTATION/REF_ANNOTATION"), "ANNOTATION_REF")
-	reflex_val <- xml2::xml_text(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='reflex']/ANNOTATION/REF_ANNOTATION/ANNOTATION_VALUE"))
+	reflex_id <- xml2::xml_attr(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='isnref']/ANNOTATION/REF_ANNOTATION"), "ANNOTATION_ID")
+	reflex_ref <- xml2::xml_attr(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='isnref']/ANNOTATION/REF_ANNOTATION"), "ANNOTATION_REF")
+	reflex_val <- xml2::xml_text(xml2::xml_find_all(raweaf, "//TIER[@TIER_ID='isnref']/ANNOTATION/REF_ANNOTATION/ANNOTATION_VALUE"))
 
 	tab_reflex <- data.table(reflex_id, reflex_ref, reflex_val)
 

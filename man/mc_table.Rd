@@ -23,14 +23,14 @@ table for each text.}
 \code{getwd}. Ignored if \code{write} is \code{FALSE}.}
 
 \item{output}{Unused. Will be used to specify the file format to write as.
-Currently only output as TEX files is supported.}
+Currently only TEX output is supported.}
 }
 \value{
-A table.
+A \code{data.table} with GRAID counts.
 }
 \description{
 Constructs simple tables with counts for certain combinations of GRAID form,
-person/animacy, and function symbols. In the current iteration, the GRAID
+person/animacy, and function symbols. In its current form, the GRAID
 categories counted for the tables are predetermined and cannot be changed by
 the user. The TEX files that can optionally be written by this function are
 used for the 'Corpus counts' in the Multi-CAST documentation.

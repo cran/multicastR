@@ -4,20 +4,14 @@
 \alias{multicast}
 \title{Access Multi-CAST annotation data}
 \usage{
-multicast(vkey, legacy.colnames = FALSE)
+multicast(vkey)
 }
 \arguments{
 \item{vkey}{A numeric or character vector of length 1 specifying the
 requested version of the annotation values. Must be one of the four-digit
 version keys in the first column of \code{\link{mc_index}}, or empty. If
-empty or no value is supplied, \code{multicast} automatically retrieves the
-most recent version of the annotations. See the examples below for an
-illustration.}
-
-\item{legacy.colnames}{If \code{TRUE}, renames the \code{text} and
-\code{gword} columns to what they were called prior to version 1.1.0 of the
-package (i.e. \code{file}, \code{word}). This option will be removed in the
-future.}
+empty or no value is supplied, the most recent version of the annotations
+is retrieved automatically. See the examples below for an illustration.}
 }
 \value{
 A \code{\link[data.table]{data.table}} with eleven columns:
@@ -34,17 +28,18 @@ A \code{\link[data.table]{data.table}} with eleven columns:
   gloss.} \item{\code{[, 8] ganim}}{The person-animacy symbol of a GRAID
   gloss.} \item{\code{[, 9] gfunc}}{The function symbol of a GRAID gloss.}
   \item{\code{[, 10] refind}}{Referent tracking using the RefIND scheme
-  (Schiborr et al. 2018).} \item{\code{[, 11] reflex}}{The information status
-  of newly introduced referents, using a simplified version of the RefLex
-  scheme (Riester & Baumann 2017).} }
+  (Schiborr et al. 2018).} \item{\code{[, 11] isnref}}{Annotations of the
+  information status of newly introduced referents with ISNRef, a simplified
+  version of the RefLex scheme (Riester & Baumann 2017).} }
 }
 \description{
 \code{multicast} downloads the Multi-CAST annotation data from the servers of
 the University of Bamberg and outputs them as a
 \code{\link[data.table]{data.table}}. As the Multi-CAST collection is
 amenable to extension by additional data sets and annotation schemes,
-\code{multicast} takes an optional argument to select earlier versions of the
-annotation data to ensure scientific accountability and reproducability.
+\code{multicast} takes an optional argument \code{vkey} to select earlier
+versions of the annotation data to ensure scientific accountability and
+reproducibility.
 }
 \section{Licensing}{
  The Multi-CAST annotation data accessed by the
@@ -57,11 +52,11 @@ annotation data to ensure scientific accountability and reproducability.
 
 \section{Citing Multi-CAST}{
  Data from the Multi-CAST collection should be
-  cited as: \itemize{ \item Haig, Geoffrey & Schnell, Stefan (eds.).
-  2015. \emph{Multi-CAST: Multilinguial Corpus of Annotated Spoken
-  Texts}. (\url{https://multicast.aspra.uni-bamberg.de/}) (Accessed
-  \emph{date}.) } If for some reason you need to cite this package on its
-  own, please refer to \code{citation(multicastR)}.
+  cited as: \itemize{ \item Haig, Geoffrey & Schnell, Stefan (eds.). 2015.
+  \emph{Multi-CAST: Multilingual Corpus of Annotated Spoken Texts}.
+  (\url{https://multicast.aspra.uni-bamberg.de/}) (Accessed \emph{date}.) }
+  If you need to cite this package specifically, please refer to
+  \code{citation(multicastR)}.
 }
 
 \section{References}{
@@ -86,12 +81,13 @@ annotation data to ensure scientific accountability and reproducability.
   # Multi-CAST annotations
   multicast()
 
-  # retrieve and print the version of the annotation data
-  # published in May 2019
+  # retrieve the version of the annotation data published
+  # in May 2019
   multicast(1905)   # or: multicast("1905")
 }
 
 }
 \seealso{
-\code{\link{mc_index}}, \code{\link{mc_referents}}
+\code{\link{mc_index}}, \code{\link{mc_referents}},
+  \code{\link{mc_metadata}}, \code{\link{mc_clauses}}
 }

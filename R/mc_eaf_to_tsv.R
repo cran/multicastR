@@ -150,7 +150,7 @@ mc_prep_tsv <- function(eaffile) {
 						 "graid_val", "gform", "ganim", "gfunc", "refind_val", "reflex_val", "meta")]
 
 	# rename columns
-	setnames(mcastr, c(4:6, 10:11), c("gword", "gloss", "graid", "refind", "reflex"))
+	setnames(mcastr, c(4:6, 10:11), c("gword", "gloss", "graid", "refind", "isnref"))
 
 	# !!!!!!!!!! #
 	# REMOVE ROWS THAT HAVE NO MATERIAL IN THE GWORDS, GLOSS, AND GRAID COLUMNS

@@ -4,7 +4,16 @@
 \alias{mc_referents}
 \title{Access the Multi-CAST list of referents}
 \usage{
-mc_referents()
+mc_referents(vkey)
+}
+\arguments{
+\item{vkey}{A numeric or character vector of length 1 specifying the
+requested version of the annotation values. Must be one of the four-digit
+version keys in the first column of \code{\link{mc_index}}, or empty. If
+empty or no value is supplied, the most recent version of the annotations
+is retrieved automatically. Note that the first annotations with RefIND
+were added with version 1905 (May 2019), and hence no lists of referents
+exist for earlier versions (i.e. 1505 and 1606).}
 }
 \value{
 A \code{\link[data.table]{data.table}} containing lists of referents
@@ -29,13 +38,26 @@ A \code{\link[data.table]{data.table}} containing lists of referents
 \code{mc_referents} downloads the lists of referents for all texts in the
 Multi-CAST collection that have been annotated with the RefIND scheme
 (Referent Indexing in Natural-language Discourse, Schiborr et al. 2018). The
-data is downloaded from the servers of University of Bamberg and presented as
+data are downloaded from the servers of University of Bamberg and presented as
 a \code{\link[data.table]{data.table}}.
 }
 \examples{
 \dontrun{
-  # retrieve and print the Multi-CAST lists of referents
+  # retrieve the most recent version of the Multi-CAST lists of referents
   mc_referents()
+
+  # retrieve the lists of referents published in May 2019
+  mc_referents(1905)   # or: mc_referents("1905")
+
+  # join the list of referents to a table with annotation values
+  mc <- multicast()
+  merge(mc, mc_referents(),
+        by = c("corpus", "text", "refind"),
+        all.x = TRUE)
 }
 
+}
+\seealso{
+\code{\link{multicast}}, \code{\link{mc_index}},
+  \code{\link{mc_metadata}}, \code{\link{mc_clauses}}
 }

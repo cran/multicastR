@@ -4,7 +4,14 @@
 \alias{mc_metadata}
 \title{Access the Multi-CAST metadata}
 \usage{
-mc_metadata()
+mc_metadata(vkey)
+}
+\arguments{
+\item{vkey}{A numeric or character vector of length 1 specifying the
+requested version of the annotation values. Must be one of the four-digit
+version keys in the first column of \code{\link{mc_index}}, or empty. If
+empty or no value is supplied, the most recent version of the annotations
+is retrieved automatically.}
 }
 \value{
 A \code{\link[data.table]{data.table}} containing metadata on the
@@ -18,8 +25,8 @@ A \code{\link[data.table]{data.table}} containing metadata on the
   \item{\code{[, 5] speaker}}{The identifier for the speaker.} \item{\code{[,
   6] gender}}{The speaker's gender.} \item{\code{[, 7] age}}{The speaker's
   age at the time of recording. Approximate values are prefixed with a
-  \code{c}.} \item{\code{[, 8] born}}{The speaker's birth year. Approximate
-  values are prefixed with a \code{c}.} }
+  \code{c}.} \item{\code{[, 8] born}}{The speaker's birth year (YYY).
+  Approximate values are prefixed with a \code{c}.} }
 }
 \description{
 \code{mc_metadata} downloads a table with metadata on the texts and speakers
@@ -29,8 +36,19 @@ University of Bamberg and presented as a
 }
 \examples{
 \dontrun{
-  # retrieve and print the Multi-CAST metadata
+  # retrieve the most recent version of the Multi-CAST metadata
   mc_metadata()
+
+  # retrieve the lists of referents published in May 2019
+  mc_metadata(1905)   # or: mc_metadata("1905")
+
+  # join the metadata to a table with annotation values
+  mc <- multicast()
+  merge(mc, mc_metadata(), by = c("corpus", "text"))
 }
 
+}
+\seealso{
+\code{\link{multicast}}, \code{\link{mc_index}},
+  \code{\link{mc_referents}}, \code{\link{mc_clauses}}
 }

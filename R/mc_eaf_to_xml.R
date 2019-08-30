@@ -353,8 +353,8 @@ mc_build_xml <- function(mctext, vkey, skipempty = TRUE) {
 																ann_refind)
 								}
 
-								# - RefLex - - - - - - - - - -
-								# RefLex
+								# - ISNRef - - - - - - - - - -
+								# ISNRef
 								ann_reflex <- mctext[file == files[i_file] & uid == utt_uid][i_segment, reflex_val]
 
 								# check if current RefLex slot is empty,
@@ -362,7 +362,7 @@ mc_build_xml <- function(mctext, vkey, skipempty = TRUE) {
 								if (skipempty == FALSE | !is.na(ann_reflex)) {
 									# create RefLex node
 									n_reflex <- XML::newXMLNode(parent = n_segment,
-																name = "reflex",
+																name = "isnref",
 																ann_reflex)
 								}
 							}

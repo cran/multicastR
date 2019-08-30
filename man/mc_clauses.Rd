@@ -28,10 +28,10 @@ Counts the number of clause units (bounded by the \code{<##>}, \code{<#>}, or
 \dontrun{
   # count clause units in the most recent version
   # of the Multi-CAST data, by corpus
-  n <- mc_count_clauses(multicast())
+  n <- mc_clauses(multicast())
 
   # count by text instead
-  m <- mc_count_clauses(multicast(), bytext = TRUE)
+  m <- mc_clauses(multicast(), bytext = TRUE)
 
   # number of clauses units in the whole collection
   sum(n$nClauses)
@@ -39,5 +39,6 @@ Counts the number of clause units (bounded by the \code{<##>}, \code{<#>}, or
 
 }
 \seealso{
-\code{\link{multicast}}
+\code{\link{multicast}}, \code{\link{mc_index}},
+  \code{\link{mc_referents}}, \code{\link{mc_metadata}}
 }

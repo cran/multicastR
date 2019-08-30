@@ -1,5 +1,17 @@
 ## *multicastR* news
 
+#### 1.3.0 [released 19-08-30]
+*  the `reflex` column in *multicastR* tables has been renamed to `isnref`
+*  function `mc_referents` now takes an optional argument `vkey` to select
+   specific versions of the lists of referents
+*  function `mc_metadata` now takes an optional argument `vkey` to select
+   specific versions of the metadata
+*  updated repository links
+*  updated documentation
+*  removed the `legacy.colnames` argument from function `multicast`
+*  removed function `mcindex` (use `mc_index` instead)
+*  removed function `mc_count_clauses` (use `mc_clauses` instead)
+
 #### 1.2.0 [released 19-07-30]
 *  new function `mc_metadata`: download a table containing all corpus metadata
    from the repository

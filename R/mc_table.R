@@ -3,7 +3,7 @@
 #' Generate tables with summarized GRAID counts (WIP)
 #'
 #' Constructs simple tables with counts for certain combinations of GRAID form,
-#' person/animacy, and function symbols. In the current iteration, the GRAID
+#' person/animacy, and function symbols. In its current form, the GRAID
 #' categories counted for the tables are predetermined and cannot be changed by
 #' the user. The TEX files that can optionally be written by this function are
 #' used for the 'Corpus counts' in the Multi-CAST documentation.
@@ -18,9 +18,9 @@
 #' @param writeto A directory to which to write output. Defaults to
 #'   \code{getwd}. Ignored if \code{write} is \code{FALSE}.
 #' @param output Unused. Will be used to specify the file format to write as.
-#'   Currently only output as TEX files is supported.
+#'   Currently only TEX output is supported.
 #'
-#' @return A table.
+#' @return A \code{data.table} with GRAID counts.
 #'
 #' @export
 #'
