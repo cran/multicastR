@@ -1,5 +1,19 @@
 ## *multicastR* news
 
+#### 2.0.0 [released 21-02-22]
+* removed dependency on the *data.table* package
+* functions `multicast`, `mc_metadata`, `mc_referents`, and `mc_clauses`
+  have been fully rewritten to output `data.frame`s instead of `data.table`s
+* the version index (as retrieved by function `mc_index`) now includes the
+  number of corpora in each version of the collection instead of an explicit
+  list of corpora and has a slightly reshuffled column order
+* removed the `mc_table` function for its lack of practical utility
+* removed a number of previously hidden functions for file conversion; these
+  will be made available in the future as a standalone package available from
+  the Multi-CAST website
+* consequently, *multicastR* no longer imports a number of packages (`stringi`,
+  `curl`, `xml2`, `XML`, `xtable`, `gsubfn`) used by these functions
+
 #### 1.3.0 [released 19-08-30]
 *  the `reflex` column in *multicastR* tables has been renamed to `isnref`
 *  function `mc_referents` now takes an optional argument `vkey` to select

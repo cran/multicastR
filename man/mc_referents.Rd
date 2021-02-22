@@ -4,21 +4,21 @@
 \alias{mc_referents}
 \title{Access the Multi-CAST list of referents}
 \usage{
-mc_referents(vkey)
+mc_referents(vkey = NULL)
 }
 \arguments{
-\item{vkey}{A numeric or character vector of length 1 specifying the
-requested version of the annotation values. Must be one of the four-digit
-version keys in the first column of \code{\link{mc_index}}, or empty. If
-empty or no value is supplied, the most recent version of the annotations
-is retrieved automatically. Note that the first annotations with RefIND
-were added with version 1905 (May 2019), and hence no lists of referents
-exist for earlier versions (i.e. 1505 and 1606).}
+\item{vkey}{A four-digit number specifying the requested version of the list
+of referents. Must be one of the version keys listed in the first column of
+\code{\link{mc_index}}, or empty. If empty, the most recent version of the
+list of referents is retrieved automatically. Note that the first
+annotations with RefIND were added with version 1905 (May 2019) of
+Multi-CAST, and hence no lists of referents exist for earlier versions
+(i.e. 1505 and 1606).}
 }
 \value{
-A \code{\link[data.table]{data.table}} containing lists of referents
-  for all texts with RefIND annotations in the Multi-CAST collection. The table
-  has the following eight columns:
+A \code{\link{data.frame}} containing a list of referents for all
+  texts with RefIND annotations in the Multi-CAST collection. The table has
+  the following eight columns:
 
   \describe{ \item{\code{[, 1] corpus}}{The name of the corpus.}
   \item{\code{[, 2] text}}{The title of the text.} \item{\code{[, 3]
@@ -35,19 +35,18 @@ A \code{\link[data.table]{data.table}} containing lists of referents
   properties.} }
 }
 \description{
-\code{mc_referents} downloads the lists of referents for all texts in the
-Multi-CAST collection that have been annotated with the RefIND scheme
-(Referent Indexing in Natural-language Discourse, Schiborr et al. 2018). The
-data are downloaded from the servers of University of Bamberg and presented as
-a \code{\link[data.table]{data.table}}.
+\code{mc_referents} downloads a tabular list of all discourse referents
+occuring in those texts in the Multi-CAST collection that have been annotated
+with the RefIND scheme (Schiborr et al. 2018). The data are downloaded from
+the servers of University of Bamberg.
 }
 \examples{
 \dontrun{
-  # retrieve the most recent version of the Multi-CAST lists of referents
+  # retrieve the most recent version of the Multi-CAST list of referents
   mc_referents()
 
-  # retrieve the lists of referents published in May 2019
-  mc_referents(1905)   # or: mc_referents("1905")
+  # retrieve the lists of referents published in January 2021
+  mc_referents(2021)
 
   # join the list of referents to a table with annotation values
   mc <- multicast()

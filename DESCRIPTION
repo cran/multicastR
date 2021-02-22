@@ -1,7 +1,7 @@
 Package: multicastR
 Type: Package
 Title: A Companion to the Multi-CAST Collection
-Version: 1.3.0
+Version: 2.0.0
 Authors@R: person("Nils Norman", "Schiborr", email = "nils-norman.schiborr@uni-bamberg.de", role = c("aut", "cre"))
 URL: https://multicast.aspra.uni-bamberg.de/
 Description: Provides a basic interface for accessing annotation data from
@@ -15,14 +15,13 @@ Description: Provides a basic interface for accessing annotation data from
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.0.0), data.table (>= 1.10.0)
-Imports: stringi (>= 1.1.0), curl (>= 3.3), xml2 (>= 1.1.0), XML (>=
-        3.98.0), xtable (>= 1.8.0), gsubfn (>= 0.7)
-RoxygenNote: 6.1.1
-Suggests: testthat
+Depends: R (>= 3.0.0),
+Imports:
+RoxygenNote: 7.1.1
+Suggests:
 NeedsCompilation: no
-Packaged: 2019-08-30 03:07:41 UTC; Nils
+Packaged: 2021-02-22 00:06:07 UTC; Nils
 Author: Nils Norman Schiborr [aut, cre]
 Maintainer: Nils Norman Schiborr <nils-norman.schiborr@uni-bamberg.de>
 Repository: CRAN
-Date/Publication: 2019-08-30 05:50:02 UTC
+Date/Publication: 2021-02-22 19:20:02 UTC

@@ -4,18 +4,17 @@
 \alias{mc_metadata}
 \title{Access the Multi-CAST metadata}
 \usage{
-mc_metadata(vkey)
+mc_metadata(vkey = NULL)
 }
 \arguments{
-\item{vkey}{A numeric or character vector of length 1 specifying the
-requested version of the annotation values. Must be one of the four-digit
-version keys in the first column of \code{\link{mc_index}}, or empty. If
-empty or no value is supplied, the most recent version of the annotations
-is retrieved automatically.}
+\item{vkey}{A four-digit number specifying the requested version of the
+metadata. Must be one of the version keys listed in the first column of
+\code{\link{mc_index}}, or empty. If empty, the most recent version of the
+metadata is retrieved automatically.}
 }
 \value{
-A \code{\link[data.table]{data.table}} containing metadata on the
-  Multi-CAST collection. The table has the following eight columns:
+A \code{\link{data.frame}} containing metadata on the Multi-CAST
+  collection. The table has the following eight columns:
 
   \describe{ \item{\code{[, 1] corpus}}{The name of the corpus.}
   \item{\code{[, 2] text}}{The title of the text.} \item{\code{[, 3]
@@ -30,21 +29,20 @@ A \code{\link[data.table]{data.table}} containing metadata on the
 }
 \description{
 \code{mc_metadata} downloads a table with metadata on the texts and speakers
-in the Multi-CAST collection. The data is downloaded from the servers of
-University of Bamberg and presented as a
-\code{\link[data.table]{data.table}}.
+in the Multi-CAST collection from the servers of the University of Bamberg.
 }
 \examples{
 \dontrun{
   # retrieve the most recent version of the Multi-CAST metadata
   mc_metadata()
 
-  # retrieve the lists of referents published in May 2019
-  mc_metadata(1905)   # or: mc_metadata("1905")
+  # retrieve the lists of referents published in January 2021
+  mc_metadata(2101)
 
   # join the metadata to a table with annotation values
   mc <- multicast()
-  merge(mc, mc_metadata(), by = c("corpus", "text"))
+  merge(mc, mc_metadata(),
+        by = c("corpus", "text"))
 }
 
 }
